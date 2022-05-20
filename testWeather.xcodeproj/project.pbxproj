@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5B0897F12834C300004F7EF0 /* ViewAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0897F02834C300004F7EF0 /* ViewAnimation.swift */; };
 		5B1216F02836A264003CC208 /* DetailWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1216EF2836A264003CC208 /* DetailWeatherViewController.swift */; };
+		5B1216F52838310C003CC208 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5B1216F42838310C003CC208 /* .gitignore */; };
 		5BA7C97C2832ACCC0045073F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA7C97B2832ACCC0045073F /* AppDelegate.swift */; };
 		5BA7C97E2832ACCC0045073F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA7C97D2832ACCC0045073F /* SceneDelegate.swift */; };
 		5BA7C9802832ACCC0045073F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA7C97F2832ACCC0045073F /* ViewController.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		5B0897F02834C300004F7EF0 /* ViewAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAnimation.swift; sourceTree = "<group>"; };
 		5B1216EF2836A264003CC208 /* DetailWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherViewController.swift; sourceTree = "<group>"; };
+		5B1216F42838310C003CC208 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		5BA7C9782832ACCC0045073F /* testWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = testWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BA7C97B2832ACCC0045073F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5BA7C97D2832ACCC0045073F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 		5BA7C96F2832ACCC0045073F = {
 			isa = PBXGroup;
 			children = (
+				5B1216F42838310C003CC208 /* .gitignore */,
 				5BA7C97A2832ACCC0045073F /* testWeather */,
 				5BA7C9792832ACCC0045073F /* Products */,
 			);
@@ -168,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BA7C9882832ACCD0045073F /* LaunchScreen.storyboard in Resources */,
+				5B1216F52838310C003CC208 /* .gitignore in Resources */,
 				5BA7C9852832ACCD0045073F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
