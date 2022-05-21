@@ -6,10 +6,25 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ViewController: UIViewController {
     
     private let searchController = UISearchController(searchResultsController: nil)
+    
+    var cities: Results<WeatherCities>!
+    private var filtredCities: Results<WeatherCities>!
+    
+    private var searchBarIsEmpty: Bool {
+        guard let text = searchController.searchBar.text else { return false }
+        return text.isEmpty
+    }
+    
+    private var isFiltering: Bool {
+        return searchController.isActive && !searchBarIsEmpty
+    }
+    
+    private var ascendingSorting = true
     
     var weatherManager = WeatherManager()
     
@@ -31,6 +46,8 @@ class ViewController: UIViewController {
         setupView()
         setupNavigationBar()
         setupSearchController()
+        
+        cities = realm.objects(WeatherCities.self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,7 +71,7 @@ class ViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCity))
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: weatherTableView, action: #selector(weatherTableView.reloadData))
-    
+        
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white ]
@@ -70,7 +87,8 @@ class ViewController: UIViewController {
     private func setupSearchController() {
         searchController.searchResultsUpdater = self // получать информации должен быть наш класс
         searchController.obscuresBackgroundDuringPresentation = false // позволяет взаимодействовать с результатом поиска
-        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.placeholder = "Enter city"
+        searchController.searchBar.searchTextField.textColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.9490196078, alpha: 1)
         navigationItem.searchController = searchController // добавили поиск в нав бар
         definesPresentationContext = true // позволяет отпустить поиск при переходе на другой экран
     }
@@ -103,7 +121,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     // count cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        Cities.city.count
+        if isFiltering {
+            return filtredCities.count
+        }
+        
+       return cities.isEmpty ? 0 : cities.count
         
     }
     
@@ -114,11 +136,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }
         
-        if Cities.city[indexPath.row] != "" {
-            let city = Cities.city[indexPath.row].split(separator: " ").joined(separator: "%20")
-            cell.weatherManager.fetchWweather(cityName: city)
-        }
-        
+        let city = cities[indexPath.row]
+        cell.weatherManager.fetchWweather(cityName: city.nameCity.split(separator: " ").joined(separator: "%20"))
         return cell
     }
     
@@ -139,8 +158,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     // show detail cell (Detail weather)
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        var city = WeatherCities()
+        
+        if isFiltering {
+            city = filtredCities[indexPath.row]
+        } else {
+            city = cities[indexPath.row]
+        }
+       
         let detailWeatherVC = DetailWeatherViewController()
-        detailWeatherVC.city = Cities.city[indexPath.row].split(separator: " ").joined(separator: "%20")
+        detailWeatherVC.city = city.nameCity.split(separator: " ").joined(separator: "%20")
         present(detailWeatherVC, animated: true)
     }
     
@@ -149,7 +176,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: work with searchBar
 extension ViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+    
+    private func filterContentForSearchText (_ searchText: String) {
+        filtredCities = cities.filter("nameCity CONTAINS[c] %@", searchText, searchText)
+        weatherTableView.reloadData()
     }
 }
 
