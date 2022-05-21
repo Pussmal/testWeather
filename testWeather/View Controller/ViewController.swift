@@ -97,11 +97,16 @@ class ViewController: UIViewController {
         let alert = UIAlertController(title: "Enter city", message: nil, preferredStyle: .alert)
         let action = UIAlertAction(title: "Save", style: .default) { [unowned alert] _ in
             let answer = alert.textFields![0]
+           
+            let cityName = WeatherCities()
+            
             guard answer.text != ""  else { return }
             if let city = answer.text {
-                guard !Cities.city.contains(city) else { return }
-                Cities.city.append(city)
+                cityName.nameCity = city.split(separator: " ").joined(separator: "%20")
+                
+                StorageManager.saveObject(cityName)
                 self.weatherTableView.reloadData()
+                
             }
         }
         
@@ -149,9 +154,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     // delete cell
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            Cities.city.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+        
+        let city = cities[indexPath.row]
+        
+        if editingStyle == .delete {            
+            tableView.beginUpdates()
+            StorageManager.deleteObject(city)
+            tableView.deleteRows(at: [indexPath], with: .fade )
+            tableView.endUpdates()
+            
         }
     }
     
