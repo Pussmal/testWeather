@@ -141,7 +141,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }
         
-        let city = cities[indexPath.row]
+        var city = WeatherCities()
+        
+        if isFiltering {
+            city = filtredCities[indexPath.row]
+        } else {
+            city = cities[indexPath.row]
+        }
+        
         cell.weatherManager.fetchWweather(cityName: city.nameCity.split(separator: " ").joined(separator: "%20"))
         return cell
     }
