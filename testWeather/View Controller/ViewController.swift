@@ -91,6 +91,10 @@ class ViewController: UIViewController {
         searchController.searchBar.searchTextField.textColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.9490196078, alpha: 1)
         navigationItem.searchController = searchController // добавили поиск в нав бар
         definesPresentationContext = true // позволяет отпустить поиск при переходе на другой экран
+        
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
+
+        textFieldInsideSearchBar?.textColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.9490196078, alpha: 1)
     }
     
     @objc private func addCity() {
@@ -103,10 +107,8 @@ class ViewController: UIViewController {
             guard answer.text != ""  else { return }
             if let city = answer.text {
                 cityName.nameCity = city.split(separator: " ").joined(separator: "%20")
-                
                 StorageManager.saveObject(cityName)
                 self.weatherTableView.reloadData()
-                
             }
         }
         
