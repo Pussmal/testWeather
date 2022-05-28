@@ -108,7 +108,9 @@ class ViewController: UIViewController {
             if let city = answer.text {
                 cityName.nameCity = city.split(separator: " ").joined(separator: "%20")
                 StorageManager.saveObject(cityName)
-                self.weatherTableView.reloadData()
+              
+                let indexPath = IndexPath(row: self.cities.count - 1, section: 0)
+                self.weatherTableView.insertRows(at: [indexPath] , with: .automatic)
             }
         }
         
